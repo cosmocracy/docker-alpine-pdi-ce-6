@@ -21,8 +21,9 @@ RUN adduser -h ${DEST_DIR} -s /bin/false -D -u 555 ${PENTAHO_USERNAME}
 WORKDIR ${DEST_DIR}
 
 # Get and unpack pdi-ce 6.0 stable.
-RUN wget http://downloads.sourceforge.net/project/pentaho/Data%20Integration/6.0/${ARCHIVE_FILE}
-RUN unzip ${ARCHIVE_FILE} && rm -f ${ARCHIVE_FILE}
+RUN wget http://downloads.sourceforge.net/project/pentaho/Data%20Integration/6.0/${ARCHIVE_FILE} \
+    && unzip ${ARCHIVE_FILE} \
+    && rm -f ${ARCHIVE_FILE}
 
 VOLUME ["/home/pentaho/repository"]
 
