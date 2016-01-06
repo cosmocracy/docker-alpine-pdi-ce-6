@@ -9,20 +9,23 @@ RUN apk --update add openjdk7-jre
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm/jre
 ENV JRE_HOME=${JAVA_HOME} \
     PENTAHO_JAVA_HOME=${JAVA_HOME} \
-    PENTAHO_HOME=/home/pentaho/data-integration \
+    DEST_DIR=/home/pentaho \
+    ARCHIVE_FILE=pdi-ce-6.0.1.0-386.zip \
+    PENTAHO_HOME=${DEST_DIR}/data-integration \
+    PENTAHO_USERNAME=pentaho \
     PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
 # Add a user (user id 500) with no login and create the pentaho home directory.
-RUN adduser -h /home/pentaho -s /bin/false -D -u 555 pentaho
+RUN adduser -h ${DEST_DIR} -s /bin/false -D -u 555 ${PENTAHO_USERNAME}
+
+WORKDIR ${DEST_DIR}
 
 # Get and unpack pdi-ce 6.0 stable.
-ADD http://downloads.sourceforge.net/project/pentaho/Data%20Integration/6.0/pdi-ce-6.0.1.0-386.zip /home/pentaho
-RUN unzip /home/pentaho/pdi-ce-6.0.1.0-386.zip && rm -f /home/pentaho/pdi-ce-6.0.1.0-386.zip
+RUN wget http://downloads.sourceforge.net/project/pentaho/Data%20Integration/6.0/${ARCHIVE_FILE}
+RUN unzip ${ARCHIVE_FILE} && rm -f ${ARCHIVE_FILE}
 
-VOLUME ["/var/local/data-integration/repository"]
-
-WORKDIR $PENTAHO_HOME
+VOLUME ["/home/pentaho/repository"]
 
 EXPOSE 80
 
-CMD ["./carte.sh", "0.0.0.0", "80"]
+CMD ["/home/pentaho/data-integration/carte.sh", "0.0.0.0", "80"]
