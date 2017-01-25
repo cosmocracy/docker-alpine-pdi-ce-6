@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM alpine:latest
 
 MAINTAINER Nyk Cowham <Nicholas.Cowham@corbis.com>
 
@@ -10,7 +10,7 @@ ENV JAVA_HOME=/usr/lib/jvm/default-jvm/jre
 ENV JRE_HOME=${JAVA_HOME} \
     PENTAHO_JAVA_HOME=${JAVA_HOME} \
     DEST_DIR=/home/pentaho \
-    ARCHIVE_FILE=pdi-ce-6.0.1.0-386.zip \
+    ARCHIVE_FILE=pdi-ce-7.0.0.0-25.zip \
     PENTAHO_HOME=${DEST_DIR}/data-integration \
     PENTAHO_USERNAME=pentaho \
     PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
@@ -20,8 +20,8 @@ RUN adduser -h ${DEST_DIR} -s /bin/false -D -u 555 ${PENTAHO_USERNAME}
 
 WORKDIR ${DEST_DIR}
 
-# Get and unpack pdi-ce 6.0 stable.
-RUN wget http://downloads.sourceforge.net/project/pentaho/Data%20Integration/6.0/${ARCHIVE_FILE} \
+# Get and unpack pdi-ce
+RUN wget https://downloads.sourceforge.net/project/pentaho/Data%20Integration/7.0/pdi-ce-7.0.0.0-25.zip \
     && unzip ${ARCHIVE_FILE} \
     && rm -f ${ARCHIVE_FILE}
 
